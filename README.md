@@ -2,20 +2,20 @@
 
 Welcome to the GPT-4o Voice Generator! This application allows you to generate fun and expressive voices for your projects using the advanced GPT-4o audio preview. **Please note that you will need your own OpenAI API key to use this app.**
 
-- **Frostina.wav**
-  https://github.com/ZeddBread/GPT4o-Voice-Generator/raw/refs/heads/master/public/Frostina.wav
+**Frostina.wav**
+- https://github.com/ZeddBread/GPT4o-Voice-Generator/raw/refs/heads/master/public/Frostina.wav
 
-- **Iloveyoubaby.wav**
-  https://github.com/ZeddBread/GPT4o-Voice-Generator/raw/refs/heads/master/public/iloveyoubaby.wav
+**Iloveyoubaby.wav**
+- https://github.com/ZeddBread/GPT4o-Voice-Generator/raw/refs/heads/master/public/iloveyoubaby.wav
 
-- **Antonio.wav**
-  https://github.com/ZeddBread/GPT4o-Voice-Generator/raw/refs/heads/master/public/antonio.wav
+**Antonio.wav**
+- https://github.com/ZeddBread/GPT4o-Voice-Generator/raw/refs/heads/master/public/antonio.wav
 
-- **Mickey_01.wav**
-  https://github.com/ZeddBread/GPT4o-Voice-Generator/raw/refs/heads/master/public/Mickey_01.wav
+**Mickey_01.wav**
+- https://github.com/ZeddBread/GPT4o-Voice-Generator/raw/refs/heads/master/public/Mickey_01.wav
 
-- **Mickey_02.wav**
-  https://github.com/ZeddBread/GPT4o-Voice-Generator/raw/refs/heads/master/public/Mickey_02.wav
+**Mickey_02.wav**
+- https://github.com/ZeddBread/GPT4o-Voice-Generator/raw/refs/heads/master/public/Mickey_02.wav
 
 ## Getting Started
 
