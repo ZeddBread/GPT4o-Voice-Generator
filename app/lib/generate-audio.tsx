@@ -50,18 +50,22 @@ export async function generateAudio(text: string, voice: string, fileOutput: str
   }
 }
 
-export async function writeAudioFile(audioData: any, fileOutput: string) {
+export async function checkFileExists(fileOutput: string) {
   const fs = require('fs');
   let filePath = `public/${fileOutput}.wav`;
   let fileIndex = 1;
-
-  // Check if file already exists and increment the filename by 1 if it does
   while (fs.existsSync(filePath)) {
     filePath = `public/${fileOutput}_${fileIndex}.wav`;
     fileIndex++;
   }
+  const finalName = `${fileOutput}_${fileIndex}`;
+  return finalName;
+}
+
+export async function writeAudioFile(audioData: any, finalOutputName: string) {
+
   const zAudioFile = writeFileSync(
-    filePath,
+    `public/${finalOutputName}.wav`,
     Buffer.from(audioData.data, 'base64'),
     { encoding: 'utf-8' }
   );

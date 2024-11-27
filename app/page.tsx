@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { generateAudio, writeAudioFile } from "@/app/lib/generate-audio";
+import { checkFileExists, generateAudio, writeAudioFile } from "@/app/lib/generate-audio";
 
 
 
@@ -25,10 +25,12 @@ export default function Home() {
         setAudioTranscript(transcript);
       }
       if (audioData) {
-        await writeAudioFile(audioData, fileOutput);
+        const finalOutputName = await checkFileExists(fileOutput);
+        await writeAudioFile(audioData, finalOutputName);
+        console.log("Audio file written");
         setAudioReady(true);
         setAudioGenerated(true);
-        const audioFileUrl = `/${fileOutput}.wav`;
+        const audioFileUrl = `/${finalOutputName}.wav`;
         setAudioFile(audioFileUrl);
       }
 
