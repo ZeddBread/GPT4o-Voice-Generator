@@ -61,7 +61,7 @@ export async function writeAudioFile(audioData: any, fileOutput: string) {
     fileIndex++;
   }
   const zAudioFile = writeFileSync(
-    `public/${fileOutput}.wav`,
+    filePath,
     Buffer.from(audioData.data, 'base64'),
     { encoding: 'utf-8' }
   );

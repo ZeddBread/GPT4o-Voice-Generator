@@ -140,9 +140,10 @@ export default function Home() {
                   <div className="text-red-500 font-bold">No file yet</div>
                 </div>
               ) : (
-                <div>
-                  <p className="text-base">{audioTranscript}</p>
-                  <audio src={audioFile} controlsList="download" controls autoPlay />
+                <div className="w-full flex flex-col items-center">
+                  <p className="text-base text-center">{audioTranscript}</p>
+                  <audio src={audioFile} controlsList="download" controls autoPlay className="w-full" />
+                  <a href={audioFile} download className="mt-2 py-2 px-4 bg-primary-color text-white bg-green-600 rounded-lg hover:bg-green-700 transition-colors text-base sm:text-lg md:text-xl">Download</a>
                 </div>
               )
               }
