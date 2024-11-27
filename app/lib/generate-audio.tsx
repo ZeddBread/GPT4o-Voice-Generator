@@ -4,7 +4,14 @@ import { writeFileSync } from "node:fs";
 import OpenAI from "openai";
 
 
-export async function generateAudio(text: string, voice: string, fileOutput: string, accent: string, emotion: string, openaiApiKey: string) {
+export async function generateAudio(
+  text: string,
+  voice: string,
+  accent: string,
+  emotion: string,
+  openaiApiKey: string,
+  seed?: number
+) {
   const openai = new OpenAI({ apiKey: openaiApiKey });
   const zAccent = accent.toLowerCase();
   const zEmotion = emotion.toLowerCase();
@@ -17,6 +24,7 @@ export async function generateAudio(text: string, voice: string, fileOutput: str
       model: "gpt-4o-audio-preview",
       modalities: ["text", "audio"],
       audio: { voice: zVoice, format: "wav" },
+      seed: seed,
       messages: [
         {
           role: "system",
@@ -27,6 +35,7 @@ export async function generateAudio(text: string, voice: string, fileOutput: str
         {
           role: "user",
           content: "Please say the following text: " + text
+
         }
       ]
     });
@@ -51,12 +60,12 @@ export async function generateAudio(text: string, voice: string, fileOutput: str
 export async function checkFileExists(fileOutput: string) {
   const fs = require('fs');
   let filePath = `public/${fileOutput}.wav`;
-  let fileIndex = 1;
+  let fileIndex = 0;
   while (fs.existsSync(filePath)) {
-    filePath = `public/${fileOutput}_${fileIndex}.wav`;
     fileIndex++;
+    filePath = `public/${fileOutput}_${fileIndex}.wav`;
   }
-  var finalName = `${fileOutput}_${fileIndex}`;
+  var finalName = fileIndex === 0 ? fileOutput : `${fileOutput}_${fileIndex}`;
   return finalName;
 }
 

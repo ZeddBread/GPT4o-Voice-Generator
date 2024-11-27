@@ -16,30 +16,35 @@ export default function Home() {
   const [audioTranscript, setAudioTranscript] = useState("");
   const [audioFile, setAudioFile] = useState("");
   const [openaiApiKey, setOpenaiApiKey] = useState("");
-
+  const [seed, setSeed] = useState<number | null>(null);
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError(false);
     setOpenaiApiKey(openaiApiKey);
+    setAudioFile("/");
+    setAudioTranscript("");
     setAudioReady(false);
     setAudioGenerated(false);
-    setAudioFile("");
-    console.log({ text, accent, emotion, voice, fileOutput });
+    console.log({ text, accent, emotion, voice, fileOutput, seed });
     try {
-      const audioData = await generateAudio(text, voice, fileOutput, accent, emotion, openaiApiKey);
+      const audioData = await generateAudio(text, voice, accent, emotion, openaiApiKey, seed ?? undefined);
       const transcript = audioData?.transcript;
       if (transcript) {
         setAudioTranscript(transcript);
       }
       if (audioData) {
         var finalOutputName = await checkFileExists(fileOutput);
-        console.log("Final output name:", finalOutputName);
-        await writeAudioFile(audioData, finalOutputName);
-        console.log("Audio file written");
-        setAudioReady(true);
-        setAudioGenerated(true);
-        var audioFileUrl = `/${finalOutputName}.wav`;
-        setAudioFile(audioFileUrl);
+        if (finalOutputName) {
+          console.log("Final output name:", finalOutputName);
+
+          await writeAudioFile(audioData, finalOutputName);
+          console.log("Audio file written: ", finalOutputName);
+
+          var audioFileUrl = `/${finalOutputName}.wav`;
+          setAudioFile(audioFileUrl);
+          setAudioReady(true);
+          setAudioGenerated(true);
+        }
       }
 
     } catch (error) {
@@ -129,6 +134,17 @@ export default function Home() {
         </div>
 
         <div className="flex flex-row gap-2 w-full justify-center items-center">
+          <label htmlFor="seed" className=" w-32 font-bold text-gray-600 sm:text-md md:text-lg">Seed: (optional)</label>
+          <input
+            id="seed"
+            type="number"
+            value={seed || ""}
+            onChange={(e) => setSeed(parseInt(e.target.value))}
+            className="w-full p-2 sm:p-3 border border-gray-300 rounded-lg focus:border-primary-color focus:outline-none text-base sm:text-lg md:text-xl"
+          />
+        </div>
+
+        <div className="flex flex-row gap-2 w-full justify-center items-center">
           <label htmlFor="fileOutput" className=" w-32 font-bold text-gray-600 sm:text-md md:text-lg">Filename:</label>
           <input
             id="fileOutput"
@@ -164,7 +180,7 @@ export default function Home() {
               ) : (
                 <div className="w-full flex flex-col items-center">
                   <p className="text-base text-center">{audioTranscript}</p>
-                  <audio src={audioFile} controlsList="download" controls autoPlay className="w-full" />
+                  <audio key={audioFile} src={audioFile} controlsList="download" controls autoPlay className="w-full" />
                   <a href={audioFile} download className="mt-2 py-2 px-4 bg-primary-color text-white bg-green-600 rounded-lg hover:bg-green-700 transition-colors text-base sm:text-lg md:text-xl">Download</a>
                 </div>
               )
