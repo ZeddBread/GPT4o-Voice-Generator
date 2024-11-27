@@ -2,6 +2,7 @@
 
 import { writeFileSync } from "node:fs";
 import OpenAI from "openai";
+import fs from "node:fs";
 
 
 export async function generateAudio(
@@ -23,6 +24,7 @@ export async function generateAudio(
     const response = await openai.chat.completions.create({
       model: "gpt-4o-audio-preview",
       modalities: ["text", "audio"],
+      // @ts-expect-error: Suppress type error due to outdated type definitions
       audio: { voice: zVoice, format: "wav" },
       seed: seed,
       messages: [
@@ -58,18 +60,17 @@ export async function generateAudio(
 }
 
 export async function checkFileExists(fileOutput: string) {
-  const fs = require('fs');
   let filePath = `public/${fileOutput}.wav`;
   let fileIndex = 0;
   while (fs.existsSync(filePath)) {
     fileIndex++;
     filePath = `public/${fileOutput}_${fileIndex}.wav`;
   }
-  var finalName = fileIndex === 0 ? fileOutput : `${fileOutput}_${fileIndex}`;
+  const finalName = fileIndex === 0 ? fileOutput : `${fileOutput}_${fileIndex}`;
   return finalName;
 }
 
-export async function writeAudioFile(audioData: any, finalOutputName: string) {
+export async function writeAudioFile(audioData: { data: string }, finalOutputName: string) {
 
   const zAudioFile = writeFileSync(
     `public/${finalOutputName}.wav`,

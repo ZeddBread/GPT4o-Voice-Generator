@@ -1,8 +1,8 @@
 "use client";
-import { useState, useEffect } from "react";
-//TODO: import { select } from "select2"; Change to current options to be used in the select
+import { useState } from "react";
+//TODO: import { select } from "select2"; //Change to current options to be used in the select
 import { checkFileExists, generateAudio, writeAudioFile } from "@/app/lib/generate-audio";
-import { TagLessExpressive, TagFemale, TagMostExpressive, TagMale, TagUnisex } from "@/app/lib/tags";
+//TODO: import { TagLessExpressive, TagFemale, TagMostExpressive, TagMale, TagUnisex } from "@/app/lib/tags";
 
 export default function Home() {
   const [text, setText] = useState("");
@@ -33,14 +33,14 @@ export default function Home() {
         setAudioTranscript(transcript);
       }
       if (audioData) {
-        var finalOutputName = await checkFileExists(fileOutput);
+        const finalOutputName = await checkFileExists(fileOutput);
         if (finalOutputName) {
           console.log("Final output name:", finalOutputName);
 
           await writeAudioFile(audioData, finalOutputName);
           console.log("Audio file written: ", finalOutputName);
 
-          var audioFileUrl = `/${finalOutputName}.wav`;
+          const audioFileUrl = `/${finalOutputName}.wav`;
           setAudioFile(audioFileUrl);
           setAudioReady(true);
           setAudioGenerated(true);
@@ -57,10 +57,10 @@ export default function Home() {
 
 
   return (
-    <div className="flex flex-col items-center w-full text-gray-950 justify-center min-h-screen p-4 sm:p-6 md:p-8 bg-gray-100">
+    <div className="flex flex-col items-center w-full text-gray-950 justify-center min-h-screen p-4 sm:p-6 md:p-8 rounded-3xl bg-gray-800">
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col gap-4 sm:gap-6 items-center w-full max-w-5xl bg-white p-4 sm:p-6 rounded-lg shadow-md"
+        className="flex flex-col gap-4 sm:gap-6 items-center w-full max-w-5xl bg-gray-300 p-4 sm:p-6 rounded-3xl shadow-md"
       >
         <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center">GPT-4o Voice Generator</h1>
         <p className="text-base sm:text-lg md:text-xl text-center">Generate fun and expressive voices for your projects using the advanced GPT-4o audio preview!</p>
@@ -179,8 +179,8 @@ export default function Home() {
                 </div>
               ) : (
                 <div className="w-full flex flex-col items-center">
-                  <p className="text-base text-center">{audioTranscript}</p>
-                  <audio key={audioFile} src={audioFile} controlsList="download" controls autoPlay className="w-full" />
+                  <p className="text-center text-2xl py-4">{audioTranscript}</p>
+                  <audio key={audioFile} src={audioFile} controlsList="download" controls autoPlay className="w-full p-4" />
                   <a href={audioFile} download className="mt-2 py-2 px-4 bg-primary-color text-white bg-green-600 rounded-lg hover:bg-green-700 transition-colors text-base sm:text-lg md:text-xl">Download</a>
                 </div>
               )
