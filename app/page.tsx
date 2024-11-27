@@ -9,20 +9,23 @@ export default function Home() {
   const [voice, setVoice] = useState("");
   const [fileOutput, setFileOutput] = useState("");
   const [error, setError] = useState(false);
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const [audioGenerated, setAudioGenerated] = useState(false);
+  const [audioFile, setAudioFile] = useState<any>(null);
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log({ text, accent, emotion, voice, fileOutput });
     try {
-      generateAudio(text, voice, fileOutput);
+      const audioFile = await generateAudio(text, voice, fileOutput);
+      setAudioGenerated(true);
+      setAudioFile(audioFile);
     } catch (error) {
       console.error("Error generating audio:", error);
       setError(true);
     }
   };
 
-  useEffect(() => {
-    document.getElementById("error-message")!.textContent = "";
-  }, [text, accent, emotion, voice, fileOutput]);
+  
+
 
   return (
     <div className="flex flex-col items-center w-full text-gray-950 justify-center min-h-screen p-4 sm:p-6 md:p-8 bg-gray-100">
@@ -52,20 +55,23 @@ export default function Home() {
           title="Enter emotion"
         />
         <select
-          defaultValue="alloy"
           value={voice}
           onChange={(e) => setVoice(e.target.value)}
           className="w-full p-2 sm:p-3 border border-gray-300 rounded-lg focus:border-primary-color focus:outline-none text-base sm:text-lg md:text-xl"
           title="Select voice"
         >
+          <option defaultValue="">Select voice</option>
           <option value="alloy">Alloy</option>
-          <option value="ash">Ash</option>
-          <option value="ballad">Ballad</option>
-          <option value="coral">Coral</option>
           <option value="echo">Echo</option>
-          <option value="sage">Sage</option>
+          <option value="fable">Fable</option>
+          <option value="onyx">Onyx</option>
+          <option value="nova">Nova</option>
           <option value="shimmer">Shimmer</option>
+          <option value="coral">Coral</option>
           <option value="verse">Verse</option>
+          <option value="ballad">Ballad</option>
+          <option value="ash">Ash</option>
+          <option value="sage">Sage</option>
         </select>
         <input
           type="text"
@@ -80,17 +86,29 @@ export default function Home() {
         >
           Submit
         </button>
-        <div className="w-full flex flex-col items-center bg-red-900 p-4 sm:p-6 rounded-lg" id="error-container" hidden={!error}>
-          <p className="text-base sm:text-lg md:text-xl text-red-500 font-bold">Error</p>
-          <p className="text-base sm:text-lg md:text-xl text-red-500" id="error-message"></p>
-        </div>
-        
-        <div className="w-full flex flex-col items-center">
-          <p className="text-base sm:text-lg md:text-xl">Audio Player</p>
-          <div className="w-full" id="audio-player">
-            <audio src={fileOutput + ".wav"} controls />
+
+        {error && (
+          <div className="w-full flex flex-col items-center bg-red-900 p-4 sm:p-6 rounded-lg" id="error-container">
+            <p className="text-base sm:text-lg md:text-xl text-red-500 font-bold">Error</p>
+            <p className="text-base sm:text-lg md:text-xl text-red-500" id="error-message">{`${error}`}</p>
           </div>
-        </div>
+        )}
+
+        {audioGenerated && (
+          <div className="w-full flex flex-col items-center" id="audio-container">
+            <p className="text-base sm:text-lg md:text-xl" >Audio Player</p>
+            <div className="w-auto" id="audio-player">
+              {!audioFile ? (
+                <div className="w-full flex justify-center items-center">
+                  <div className="loader"></div>
+                </div>
+              ) : (
+                <audio src={audioFile} controlsList="download" controls autoPlay />
+              )
+              }
+            </div>
+          </div>
+        )}
 
       </form>
     </div>

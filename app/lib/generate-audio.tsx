@@ -14,7 +14,7 @@ export async function generateAudio(text: string, voice: string, fileOutput: str
     const response = await openai.chat.completions.create({
       model: "gpt-4o-audio-preview",
       modalities: ["text", "audio"],
-      audio: { voice: voice as "alloy" | "ash" | "ballad" | "coral" | "echo" | "sage" | "shimmer" | "verse" , format: "wav" },
+      audio: { voice: voice as "alloy" | "echo" | "fable" | "onyx" | "nova" | "shimmer" | "coral" | "verse" | "ballad" | "ash" | "sage", format: "wav" },
       messages: [
         {
           role: "user",
@@ -30,10 +30,11 @@ export async function generateAudio(text: string, voice: string, fileOutput: str
     
     // Write audio data to a file
     if (audioData) {
-      writeFileSync(
+      const audioFile = writeFileSync(
         fileOutput + ".wav",
         Buffer.from(audioData, 'base64')
       );
+      return audioFile;
     } else {
       throw new Error("Audio data is undefined");
     }
