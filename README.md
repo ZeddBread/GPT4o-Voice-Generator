@@ -4,31 +4,31 @@ Welcome to the GPT-4o Voice Generator! This application allows you to generate f
 
 - **Frostina.wav**
   <audio controls>
-    <source src="public/Frostina.wav" type="audio/wav">
+    <source src="https://github.com/ZeddBread/GPT4o-Voice-Generator/raw/refs/heads/master/public/Frostina.wav" type="audio/wav">
     Your browser does not support the audio element.
   </audio>
 
 - **Iloveyoubaby.wav**
   <audio controls>
-    <source src="public/iloveyoubaby.wav" type="audio/wav">
+    <source src="https://github.com/ZeddBread/GPT4o-Voice-Generator/raw/refs/heads/master/public/iloveyoubaby.wav" type="audio/wav">
     Your browser does not support the audio element.
   </audio>
 
 - **Antonio.wav**
   <audio controls>
-    <source src="public/antonio.wav" type="audio/wav">
+    <source src="https://github.com/ZeddBread/GPT4o-Voice-Generator/raw/refs/heads/master/public/antonio.wav" type="audio/wav">
     Your browser does not support the audio element.
   </audio>
 
 - **Mickey_01.wav**
   <audio controls>
-    <source src="public/Mickey_01.wav" type="audio/wav">
+    <source src="https://github.com/ZeddBread/GPT4o-Voice-Generator/raw/refs/heads/master/public/Mickey_01.wav" type="audio/wav">
     Your browser does not support the audio element.
   </audio>
 
 - **Mickey_02.wav**
   <audio controls>
-    <source src="public/Mickey_02.wav" type="audio/wav">
+    <source src="https://github.com/ZeddBread/GPT4o-Voice-Generator/raw/refs/heads/master/public/Mickey_02.wav" type="audio/wav">
     Your browser does not support the audio element.
   </audio>
 
