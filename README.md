@@ -1,36 +1,43 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# GPT-4o Voice Generator
+
+Welcome to the GPT-4o Voice Generator! This application allows you to generate fun and expressive voices for your projects using the advanced GPT-4o audio preview. **Please note that you will need your own OpenAI API key to use this app.**
 
 ## Getting Started
 
-First, run the development server:
+To get started, follow these simple steps:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+1. **Clone the Repository**: Clone this repository to your local machine.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. **Install Dependencies**: Navigate to the project directory and install the necessary dependencies using your preferred package manager:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+   ```bash
+   npm install
+   # or
+   yarn install
+   # or
+   pnpm install
+   ```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+3. **Run the Development Server**: Start the development server with one of the following commands:
 
-## Learn More
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   # or
+   pnpm dev
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+4. **Access the Application**: Open your browser and go to [http://localhost:3000](http://localhost:3000) to access the application.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## How to Use
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. **Enter Your OpenAI API Key**: Input your OpenAI API key in the designated field to enable audio generation.
 
-## Deploy on Vercel
+2. **Configure Your Audio**: Fill in the text, accent, emotion, and voice options to customize your audio output.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+3. **Generate Audio**: Click the "Submit" button to generate your audio file. You can download the generated audio once it's ready.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Enjoy creating unique and expressive audio content with ease!
+
+For any questions or feedback, feel free to reach out or contribute to the project. Happy generating!
