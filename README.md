@@ -2,6 +2,36 @@
 
 Welcome to the GPT-4o Voice Generator! This application allows you to generate fun and expressive voices for your projects using the advanced GPT-4o audio preview. **Please note that you will need your own OpenAI API key to use this app.**
 
+- **Frostina.wav**
+  <audio controls>
+    <source src="public/Frostina.wav" type="audio/wav">
+    Your browser does not support the audio element.
+  </audio>
+
+- **Iloveyoubaby.wav**
+  <audio controls>
+    <source src="public/iloveyoubaby.wav" type="audio/wav">
+    Your browser does not support the audio element.
+  </audio>
+
+- **Antonio.wav**
+  <audio controls>
+    <source src="public/antonio.wav" type="audio/wav">
+    Your browser does not support the audio element.
+  </audio>
+
+- **Mickey_01.wav**
+  <audio controls>
+    <source src="public/Mickey_01.wav" type="audio/wav">
+    Your browser does not support the audio element.
+  </audio>
+
+- **Mickey_02.wav**
+  <audio controls>
+    <source src="public/Mickey_02.wav" type="audio/wav">
+    Your browser does not support the audio element.
+  </audio>
+
 ## Getting Started
 
 To get started, follow these simple steps:
