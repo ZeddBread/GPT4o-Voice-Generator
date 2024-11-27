@@ -3,6 +3,9 @@ import { useState } from "react";
 //TODO: import { select } from "select2"; //Change to current options to be used in the select
 import { checkFileExists, generateAudio, writeAudioFile } from "@/app/lib/generate-audio";
 //TODO: import { TagLessExpressive, TagFemale, TagMostExpressive, TagMale, TagUnisex } from "@/app/lib/tags";
+import { put } from "@vercel/blob";
+
+
 
 export default function Home() {
   const [text, setText] = useState("");
@@ -40,8 +43,8 @@ export default function Home() {
           await writeAudioFile(audioData, finalOutputName);
           console.log("Audio file written: ", finalOutputName);
 
-          const audioFileUrl = `/${finalOutputName}.wav`;
-          setAudioFile(audioFileUrl);
+          const audioFileUrl = await put(`public/${finalOutputName}.wav`, audioData.data, { access: 'public' });
+          setAudioFile(audioFileUrl.url);
           setAudioReady(true);
           setAudioGenerated(true);
         }
