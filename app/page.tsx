@@ -2,6 +2,8 @@
 import { useState, useEffect } from "react";
 import { generateAudio, writeAudioFile } from "@/app/lib/generate-audio";
 
+
+
 export default function Home() {
   const [text, setText] = useState("");
   const [accent, setAccent] = useState("");
@@ -10,9 +12,9 @@ export default function Home() {
   const [fileOutput, setFileOutput] = useState("");
   const [error, setError] = useState(false);
   const [audioGenerated, setAudioGenerated] = useState(false);
-  const [audioFile, setAudioFile] = useState<any>(null);
+  const [audioReady, setAudioReady] = useState(false);
   const [audioTranscript, setAudioTranscript] = useState("");
-
+  const [audioFile, setAudioFile] = useState("");
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log({ text, accent, emotion, voice, fileOutput });
@@ -23,10 +25,12 @@ export default function Home() {
         setAudioTranscript(transcript);
       }
       if (audioData) {
-        const audioFile = await writeAudioFile(audioData, fileOutput);
-        setAudioFile(audioFile);
+        await writeAudioFile(audioData, fileOutput);
+        setAudioReady(true);
+        setAudioGenerated(true);
+        const audioFileUrl = `/${fileOutput}.wav`;
+        setAudioFile(audioFileUrl);
       }
-      setAudioGenerated(true);
 
     } catch (error) {
       console.error("Error generating audio:", error);
@@ -131,7 +135,7 @@ export default function Home() {
         {audioGenerated && (
           <div className="w-full flex flex-col items-center" id="audio-container">
             <div className="w-auto" id="audio-player">
-              {!audioFile ? (
+              {!audioReady ? (
                 <div className="w-full flex justify-center items-center">
                   <div className="text-red-500 font-bold">No file yet</div>
                 </div>

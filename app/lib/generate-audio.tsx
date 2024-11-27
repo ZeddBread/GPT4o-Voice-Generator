@@ -21,20 +21,19 @@ export async function generateAudio(text: string, voice: string, fileOutput: str
       messages: [
         {
           role: "system",
-          content: `You are a beautiful assistant that will speak in a beautiful voice in the specified format: 
-          Accent: ${zAccent}
-          Emotion: ${zEmotion}
-          You will only say the what has been passed to you with your best quality voice.`
+          content: `You are a beautiful assistant that will speak in a beautiful voice with the accent of a ${zAccent} and with the emotion ${zEmotion}.
+          You will say exactly what the user said in your best quality voice.
+          You will not add any additional text or information to the user's prompt.`
         },
         {
-          role: "assistant",
-          content: text
+          role: "user",
+          content: "Please say the following text: " + text
         }
       ]
     });
 
     // Inspect returned data
-    console.log(response.choices);
+    console.log(response.choices[0]);
 
     const audioData = response.choices[0]?.message?.audio;
 
@@ -52,11 +51,20 @@ export async function generateAudio(text: string, voice: string, fileOutput: str
 }
 
 export async function writeAudioFile(audioData: any, fileOutput: string) {
-  const audioFile = await writeFileSync(
-    fileOutput + ".wav",
+  const fs = require('fs');
+  let filePath = `public/${fileOutput}.wav`;
+  let fileIndex = 1;
+
+  // Check if file already exists and increment the filename by 1 if it does
+  while (fs.existsSync(filePath)) {
+    filePath = `public/${fileOutput}_${fileIndex}.wav`;
+    fileIndex++;
+  }
+  const zAudioFile = writeFileSync(
+    `public/${fileOutput}.wav`,
     Buffer.from(audioData.data, 'base64'),
     { encoding: 'utf-8' }
   );
-  return audioFile;
+  return zAudioFile;
 }
 
