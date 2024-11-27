@@ -4,15 +4,14 @@ import { writeFileSync } from "node:fs";
 import OpenAI from "openai";
 
 
-
-const openai = new OpenAI();
-
-export async function generateAudio(text: string, voice: string, fileOutput: string, accent: string, emotion: string) {
+export async function generateAudio(text: string, voice: string, fileOutput: string, accent: string, emotion: string, openaiApiKey: string) {
+  const openai = new OpenAI({ apiKey: openaiApiKey });
   const zAccent = accent.toLowerCase();
   const zEmotion = emotion.toLowerCase();
   const zVoice = voice as "alloy" | "echo" | "fable" | "onyx" | "nova" | "shimmer" | "coral" | "verse" | "ballad" | "ash" | "sage";
   try {
     console.log("Generating audio...");
+
     // Generate an audio response to the given prompt
     const response = await openai.chat.completions.create({
       model: "gpt-4o-audio-preview",
@@ -31,9 +30,8 @@ export async function generateAudio(text: string, voice: string, fileOutput: str
         }
       ]
     });
-
+    console.log(response);
     // Inspect returned data
-    console.log(response.choices[0]);
 
     const audioData = response.choices[0]?.message?.audio;
 
@@ -58,7 +56,7 @@ export async function checkFileExists(fileOutput: string) {
     filePath = `public/${fileOutput}_${fileIndex}.wav`;
     fileIndex++;
   }
-  const finalName = `${fileOutput}_${fileIndex}`;
+  var finalName = `${fileOutput}_${fileIndex}`;
   return finalName;
 }
 

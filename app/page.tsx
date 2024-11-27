@@ -1,8 +1,8 @@
 "use client";
 import { useState, useEffect } from "react";
+//TODO: import { select } from "select2"; Change to current options to be used in the select
 import { checkFileExists, generateAudio, writeAudioFile } from "@/app/lib/generate-audio";
-
-
+import { TagLessExpressive, TagFemale, TagMostExpressive, TagMale, TagUnisex } from "@/app/lib/tags";
 
 export default function Home() {
   const [text, setText] = useState("");
@@ -15,22 +15,30 @@ export default function Home() {
   const [audioReady, setAudioReady] = useState(false);
   const [audioTranscript, setAudioTranscript] = useState("");
   const [audioFile, setAudioFile] = useState("");
+  const [openaiApiKey, setOpenaiApiKey] = useState("");
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setError(false);
+    setOpenaiApiKey(openaiApiKey);
+    setAudioReady(false);
+    setAudioGenerated(false);
+    setAudioFile("");
     console.log({ text, accent, emotion, voice, fileOutput });
     try {
-      const audioData = await generateAudio(text, voice, fileOutput, accent, emotion);
+      const audioData = await generateAudio(text, voice, fileOutput, accent, emotion, openaiApiKey);
       const transcript = audioData?.transcript;
       if (transcript) {
         setAudioTranscript(transcript);
       }
       if (audioData) {
-        const finalOutputName = await checkFileExists(fileOutput);
+        var finalOutputName = await checkFileExists(fileOutput);
+        console.log("Final output name:", finalOutputName);
         await writeAudioFile(audioData, finalOutputName);
         console.log("Audio file written");
         setAudioReady(true);
         setAudioGenerated(true);
-        const audioFileUrl = `/${finalOutputName}.wav`;
+        var audioFileUrl = `/${finalOutputName}.wav`;
         setAudioFile(audioFileUrl);
       }
 
@@ -49,6 +57,18 @@ export default function Home() {
         onSubmit={handleSubmit}
         className="flex flex-col gap-4 sm:gap-6 items-center w-full max-w-5xl bg-white p-4 sm:p-6 rounded-lg shadow-md"
       >
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center">GPT-4o Voice Generator</h1>
+        <p className="text-base sm:text-lg md:text-xl text-center">Generate fun and expressive voices for your projects using the advanced GPT-4o audio preview!</p>
+
+        <div id="OpenAI API Key" className="w-full flex flex-col items-center">
+          <p className="text-base sm:text-lg md:text-xl text-center">Enter your OpenAI API key to generate audio:</p>
+          <input
+            type="password"
+            value={openaiApiKey}
+            onChange={(e) => setOpenaiApiKey(e.target.value)}
+            className="w-full p-2 sm:p-3 border border-gray-300 rounded-lg focus:border-primary-color focus:outline-none sm:text-sm md:text-md "
+          />
+        </div>
         <div className="flex flex-row gap-2 w-full justify-center items-center">
           <label htmlFor="text" className=" w-32 font-bold text-gray-600 sm:text-md md:text-lg">Generated speech:</label>
           <textarea
@@ -94,12 +114,12 @@ export default function Home() {
             title="Select voice"
           >
             <option defaultValue="">Select voice</option>
-            <option value="alloy">Alloy (Less expressive)</option>
-            <option value="echo">Echo (Less expressive)</option>
+            <option value="alloy">Alloy</option>
+            <option value="echo">Echo</option>
             <option value="fable">Fable</option>
             <option value="onyx">Onyx</option>
             <option value="nova">Nova</option>
-            <option value="shimmer">Shimmer (Less expressive)</option>
+            <option value="shimmer">Shimmer</option>
             <option value="coral">Coral</option>
             <option value="verse">Verse</option>
             <option value="ballad">Ballad</option>
