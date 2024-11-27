@@ -25,10 +25,22 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
+      </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}
       >
-        {children}
+        <header className="p-4 bg-primary-color text-white">
+          <h1 className="text-2xl font-bold">Welcome to My App</h1>
+        </header>
+        <main className="flex flex-col items-center justify-center min-h-screen p-4 sm:p-6 md:p-8 lg:p-12 xl:p-16">
+          {children}
+        </main>
+        <footer className="p-4 bg-secondary-color text-center">
+          <p className="text-sm">© 2023 My App. All rights reserved.</p>
+        </footer>
       </body>
     </html>
   );
