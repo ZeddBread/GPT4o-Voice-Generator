@@ -21,7 +21,7 @@ export default function RootLayout({
       <body
         className={`font-sansantialiased bg-background text-foreground bg-gray-900`}
       >
-        <header className="p-4 bg-primary-color bg-gray-800 drop-shadow-lg rounded-3xl mx-12 my-5 shadow-black text-white flex flex-col items-center">
+        <header className="p-4 bg-primary-color bg-gray-800 drop-shadow-lg rounded-3xl mx-4 my-5 shadow-black text-white flex flex-col items-center">
           <h1 className="text-3xl font-bold mb-2">Welcome to the GPT-4o Voice Generator</h1>
           <a
             href="https://github.com/ZeddBread"
@@ -32,11 +32,11 @@ export default function RootLayout({
             Visit My GitHub
           </a>
         </header>
-        <main className="flex flex-col items-center justify-center bg-gray-900 min-h-screen p-4 sm:p-6 md:p-8 lg:p-12 xl:p-16">
+        <main className="flex flex-col items-center justify-center bg-gray-900 min-h-screen p-4 sm:p-6 md:p-8 lg:p-12 ">
           {children}
         </main>
         <footer className="p-4 bg-secondary-color text-center">
-          <p className="text-sm">© 2023 My App. All rights reserved.</p>
+          <p className="text-lg">© 2024 <a href="https://github.com/ZeddBread" target="_blank" rel="noopener noreferrer" className="text-teal-600 hover:text-teal-700 transition duration-300">GitHub.com/ZeddBread</a>. All rights reserved.</p>
         </footer>
       </body>
     </html>
