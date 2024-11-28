@@ -1,4 +1,4 @@
-
+'use client'
 // Function to store Base64 audio data in session storage
 export function storeAudio(base64Audio: string, key: string) {
   try {
