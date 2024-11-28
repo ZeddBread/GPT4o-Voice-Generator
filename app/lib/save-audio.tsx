@@ -12,18 +12,18 @@ export function storeAudio(base64Audio: string, key: string) {
 }
 
 // Function to retrieve Base64 audio data from session storage
-export function retrieveAudioFromSession(key: string) {
+export function retrieveAudioFromLocal(key: string) {
   try {
-    const base64Audio = sessionStorage.getItem(key);
+    const base64Audio = localStorage.getItem(key);
     if (base64Audio) {
-      console.log("Audio data retrieved from session storage.");
+      console.log("Audio data retrieved from local storage.");
       return base64Audio;
     } else {
-      console.warn("No audio data found in session storage.");
+      console.warn("No audio data found in local storage.");
       return null;
     }
   } catch (error) {
-    console.error("Error retrieving audio data from session storage:", error);
+    console.error("Error retrieving audio data from local storage:", error);
     return null;
   }
 }
