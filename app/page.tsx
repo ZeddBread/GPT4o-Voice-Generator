@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 //TODO: import { select } from "select2"; //Change to current options to be used in the select
-import { checkFileExists, generateAudio, writeAudioFile } from "@/app/lib/generate-audio";
+import { generateAudio } from "@/app/lib/generate-audio";
 //TODO: import { TagLessExpressive, TagFemale, TagMostExpressive, TagMale, TagUnisex } from "@/app/lib/tags";
 import { retrieveAudioFromLocal, storeAudio } from "@/app/lib/save-audio";
 
@@ -38,6 +38,7 @@ export default function Home() {
         setAudioTranscript(transcript);
       }
       if (audioData) {
+        // eslint-disable-next-line
         const audioFile = await storeAudio(audioData.data, filename);
         const audioFileBuffer = await retrieveAudioFromLocal(filename);
         if (audioFileBuffer) {
@@ -67,6 +68,7 @@ export default function Home() {
             try {
               // Check if the data is a valid base64 string
               return audioData && btoa(atob(audioData)) === audioData;
+              // eslint-disable-next-line
             } catch (e) {
               return false;
             }
