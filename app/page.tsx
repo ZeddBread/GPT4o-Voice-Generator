@@ -3,7 +3,7 @@ import { useState } from "react";
 //TODO: import { select } from "select2"; //Change to current options to be used in the select
 import { checkFileExists, generateAudio, writeAudioFile } from "@/app/lib/generate-audio";
 //TODO: import { TagLessExpressive, TagFemale, TagMostExpressive, TagMale, TagUnisex } from "@/app/lib/tags";
-import { retrieveAudioFromSession, storeAudio } from "@/app/lib/save-audio";
+import { retrieveAudioFromLocal, storeAudio } from "@/app/lib/save-audio";
 
 export default function Home() {
   const [text, setText] = useState("");
@@ -38,7 +38,7 @@ export default function Home() {
         const audioFile = await storeAudio(audioData.data, filename);
         //TODO: Update list of audio files in session storage
 
-        const audioFileUrl = await retrieveAudioFromSession(filename);
+        const audioFileUrl = await retrieveAudioFromLocal(filename);
         if (audioFileUrl) {
           console.log("Audio file written: ", audioFileUrl);
           setAudioFile(audioFileUrl);
