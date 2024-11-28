@@ -17,7 +17,8 @@ export function retrieveAudioFromLocal(key: string) {
     const base64Audio = localStorage.getItem(key);
     if (base64Audio) {
       console.log("Audio data retrieved from local storage.");
-      return base64Audio;
+      const buffer = Buffer.from(base64Audio, 'base64');
+      return buffer;
     } else {
       console.warn("No audio data found in local storage.");
       return null;
