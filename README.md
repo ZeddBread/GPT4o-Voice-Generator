@@ -2,6 +2,9 @@
 
 Welcome to the GPT-4o Voice Generator! This application allows you to generate fun and expressive voices for your projects using the advanced GPT-4o audio preview. **Please note that you will need your own OpenAI API key to use this app.**
 
+### Demo
+https://gpt-4o-voice-generator.vercel.app/
+
 **Frostina.wav**
 - https://github.com/ZeddBread/GPT4o-Voice-Generator/raw/refs/heads/master/public/Frostina.wav
 
