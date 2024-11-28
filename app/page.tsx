@@ -3,6 +3,7 @@ import { useState } from "react";
 //TODO: import { select } from "select2"; //Change to current options to be used in the select
 import { checkFileExists, generateAudio, writeAudioFile } from "@/app/lib/generate-audio";
 //TODO: import { TagLessExpressive, TagFemale, TagMostExpressive, TagMale, TagUnisex } from "@/app/lib/tags";
+import { retrieveAudioFromSession, storeAudio } from "@/app/lib/save-audio";
 
 export default function Home() {
   const [text, setText] = useState("");
@@ -25,7 +26,8 @@ export default function Home() {
     setAudioTranscript("");
     setAudioReady(false);
     setAudioGenerated(false);
-    console.log({ text, accent, emotion, voice, fileOutput, seed });
+    const filename = fileOutput.concat(Date.now().toString());
+    console.log({ text, accent, emotion, voice, filename, seed });
     try {
       const audioData = await generateAudio(text, voice, accent, emotion, openaiApiKey, seed ?? undefined);
       const transcript = audioData?.transcript;
@@ -33,27 +35,22 @@ export default function Home() {
         setAudioTranscript(transcript);
       }
       if (audioData) {
-        const finalOutputName = await checkFileExists(fileOutput);
-        if (finalOutputName) {
-          console.log("Final output name:", finalOutputName);
+        const audioFile = await storeAudio(audioData.data, filename);
+        //TODO: Update list of audio files in session storage
 
-          await writeAudioFile(audioData, finalOutputName);
-          console.log("Audio file written: ", finalOutputName);
-
-          const audioFileUrl = `/${finalOutputName}.wav`;
+        const audioFileUrl = await retrieveAudioFromSession(filename);
+        if (audioFileUrl) {
+          console.log("Audio file written: ", audioFileUrl);
           setAudioFile(audioFileUrl);
           setAudioReady(true);
           setAudioGenerated(true);
         }
       }
-
     } catch (error) {
       console.error("Error generating audio:", error);
       setError(true);
     }
   };
-
-
 
 
   return (
