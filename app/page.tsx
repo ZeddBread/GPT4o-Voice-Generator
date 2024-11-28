@@ -63,8 +63,8 @@ export default function Home() {
         <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-center mb-4">Audio Files</h2>
         <p className="text-md bg-gray-400 rounded-lg p-4 sm:text-md md:text-lg text-center">Here you can find all the audio files you have generated on your device. You can play and download them.</p>
         <ul className="w-full list-disc pl-5">
-          {Object.keys(localStorage).filter((key) => {
-            const audioData = localStorage.getItem(key);
+          {Object.keys(globalThis.localStorage).filter((key) => {
+            const audioData = globalThis.localStorage.getItem(key);
             try {
               // Check if the data is a valid base64 string
               return audioData && btoa(atob(audioData)) === audioData;
@@ -73,15 +73,15 @@ export default function Home() {
               return false;
             }
           }).sort((a, b) => {
-            const timeA = localStorage.getItem(a + '_timestamp');
-            const timeB = localStorage.getItem(b + '_timestamp');
+            const timeA = globalThis.localStorage.getItem(a + '_timestamp');
+            const timeB = globalThis.localStorage.getItem(b + '_timestamp');
             return (timeB ? parseInt(timeB) : 0) - (timeA ? parseInt(timeA) : 0);
           }).map((key) => (
             <li key={key} className="flex flex-row justify-between items-center w-full p-2 border-b border-gray-300 hover:bg-gray-100 transition duration-200 ease-in-out">
               <span className="text-sm sm:text-md md:text-lg font-medium text-gray-800 truncate flex-grow">{key}</span>
               <button
                 onClick={() => {
-                  const audioData = localStorage.getItem(key);
+                  const audioData = globalThis.localStorage.getItem(key);
                   if (audioData) {
                     const audioFileUrl = URL.createObjectURL(new Blob([Buffer.from(audioData, 'base64')], { type: 'audio/wav' }));
                     const audio = new Audio(audioFileUrl);
@@ -94,7 +94,7 @@ export default function Home() {
               </button>
               <button
                 onClick={() => {
-                  const audioData = localStorage.getItem(key);
+                  const audioData = globalThis.localStorage.getItem(key);
                   if (audioData) {
                     const audioFileUrl = URL.createObjectURL(new Blob([Buffer.from(audioData, 'base64')], { type: 'audio/wav' }));
                     const a = document.createElement('a');
