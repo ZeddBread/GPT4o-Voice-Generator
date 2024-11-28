@@ -6,6 +6,7 @@ import { generateAudio } from "@/app/lib/generate-audio";
 import { retrieveAudioFromLocal, storeAudio } from "@/app/lib/save-audio";
 
 export default function Home() {
+
   const [text, setText] = useState("");
   const [accent, setAccent] = useState("");
   const [emotion, setEmotion] = useState("");
@@ -17,7 +18,7 @@ export default function Home() {
   const [audioTranscript, setAudioTranscript] = useState("");
   const [audioFile, setAudioFile] = useState("");
   const [openaiApiKey, setOpenaiApiKey] = useState("");
-  const [seed, setSeed] = useState<number | null>(null);
+  const [seed, setSeed] = useState<number | undefined>(undefined);
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError(false);
@@ -53,6 +54,7 @@ export default function Home() {
       console.error("Error generating audio:", error);
       setError(true);
     }
+
   };
 
 
@@ -63,7 +65,7 @@ export default function Home() {
         <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-center mb-4">Audio Files</h2>
         <p className="text-md bg-gray-400 rounded-lg p-4 sm:text-md md:text-lg text-center">Here you can find all the audio files you have generated on your device. You can play and download them.</p>
         <ul className="w-full list-disc pl-5">
-          {Object.keys(globalThis.localStorage).filter((key) => {
+          {(typeof globalThis.localStorage !== 'undefined' ? Object.keys(globalThis.localStorage) : []).filter((key) => {
             const audioData = globalThis.localStorage.getItem(key);
             try {
               // Check if the data is a valid base64 string
