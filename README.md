@@ -5,20 +5,8 @@ Welcome to the GPT-4o Voice Generator! This application allows you to generate f
 ### Demo
 https://gpt-4o-voice-generator.vercel.app/
 
-**Frostina.wav**
-- https://github.com/ZeddBread/GPT4o-Voice-Generator/raw/refs/heads/master/public/Frostina.wav
-
-**Iloveyoubaby.wav**
-- https://github.com/ZeddBread/GPT4o-Voice-Generator/raw/refs/heads/master/public/iloveyoubaby.wav
-
-**Antonio.wav**
-- https://github.com/ZeddBread/GPT4o-Voice-Generator/raw/refs/heads/master/public/antonio.wav
-
-**Mickey_01.wav**
-- https://github.com/ZeddBread/GPT4o-Voice-Generator/raw/refs/heads/master/public/Mickey_01.wav
-
-**Mickey_02.wav**
-- https://github.com/ZeddBread/GPT4o-Voice-Generator/raw/refs/heads/master/public/Mickey_02.wav
+You can find some generated audio files within this repo under /public.
+Frostina.wav is my all time favourite one yet.
 
 ## Getting Started
 
