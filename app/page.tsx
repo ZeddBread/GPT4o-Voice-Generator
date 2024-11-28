@@ -61,7 +61,7 @@ export default function Home() {
   return (
     <div className="flex flex-col-reverse lg:flex-row justify-center items-center w-full">
 
-      <div className="flex flex-col items-center w-auto text-gray-950 justify-start h-screen p-4 sm:p-6 md:p-8 rounded-3xl bg-gray-300">
+      <div className="flex flex-col items-center w-auto text-gray-950 justify-start min-h-screen h-auto p-4 sm:p-6 md:p-8 rounded-3xl bg-gray-300">
         <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-center mb-4">Audio Files</h2>
         <p className="text-md bg-gray-400 rounded-lg p-4 sm:text-md md:text-lg text-center">Here you can find all the audio files you have generated on your device. You can play and download them.</p>
         <ul className="w-full list-disc pl-5">
@@ -176,17 +176,17 @@ export default function Home() {
               title="Select voice"
             >
               <option defaultValue="">Select voice</option>
-              <option value="alloy">Alloy</option>
-              <option value="echo">Echo</option>
-              <option value="fable">Fable</option>
-              <option value="onyx">Onyx</option>
-              <option value="nova">Nova</option>
-              <option value="shimmer">Shimmer</option>
-              <option value="coral">Coral</option>
-              <option value="verse">Verse</option>
-              <option value="ballad">Ballad</option>
-              <option value="ash">Ash</option>
-              <option value="sage">Sage</option>
+              <option value="ash">🟢 ♂️ Ash</option>
+              <option value="ballad">🟢 ♂️ Ballad</option>
+              <option value="coral">🟢 ♀️ Coral</option>
+              <option value="sage">🟢 ♀️ Sage</option>
+              <option value="verse">🟢 ♂️ Verse</option>
+              <option value="fable">🔵 Fable</option>
+              <option value="onyx">🔵 Onyx</option>
+              <option value="nova">🔵 Nova</option>
+              <option value="alloy">🔴 Alloy (less expressive)</option>
+              <option value="echo">🔴 Echo (less expressive)</option>
+              <option value="shimmer">🔴 Shimmer (less expressive)</option>
             </select>
           </div>
 
