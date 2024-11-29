@@ -19,6 +19,8 @@ export default function Home() {
   const [audioFile, setAudioFile] = useState("");
   const [openaiApiKey, setOpenaiApiKey] = useState("");
   const [seed, setSeed] = useState<number | undefined>(undefined);
+  const [submitDisabled, setSubmitDisabled] = useState(false);
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError(false);
@@ -27,6 +29,7 @@ export default function Home() {
     setAudioTranscript("");
     setAudioReady(false);
     setAudioGenerated(false);
+    setSubmitDisabled(true);
 
     const timestamp = new Date().toISOString().replace(/[-T:.Z]/g, '').slice(0, 14);
     const filename = `${fileOutput}_${timestamp}`;
@@ -48,6 +51,7 @@ export default function Home() {
           setAudioFile(audioFileUrl);
           setAudioReady(true);
           setAudioGenerated(true);
+          setSubmitDisabled(false);
         }
       }
     } catch (error) {
@@ -125,6 +129,7 @@ export default function Home() {
           <div id="OpenAI API Key" className="w-full flex flex-col items-center">
             <p className="text-base sm:text-lg md:text-xl text-center">Enter your OpenAI API key to generate audio:</p>
             <input
+              id="openaiApiKey"
               type="password"
               value={openaiApiKey}
               onChange={(e) => setOpenaiApiKey(e.target.value)}
@@ -215,9 +220,11 @@ export default function Home() {
 
           <button
             type="submit"
-            className="w-full py-2 sm:py-3 bg-primary-color text-white rounded-lg hover:bg-primary-color-dark transition-colors text-base sm:text-lg md:text-xl"
+            className={`w-full py-2 sm:py-3 text-white font-semibold rounded-2xl transition-colors text-base sm:text-lg md:text-xl ${openaiApiKey ? 'bg-cyan-600 hover:bg-teal-600' : 'bg-gray-400 cursor-not-allowed'} ${submitDisabled ? 'cursor-not-allowed' : ''}`}
+            disabled={!openaiApiKey || submitDisabled}
+            title={!openaiApiKey ? "Needs API key!" : ""}
           >
-            Submit
+            {`${!openaiApiKey ? 'Needs API key' : '' } ${submitDisabled ? 'Wait...' : 'Submit'}`}
           </button>
 
           {error && (
