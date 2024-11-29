@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/react"
 
 
 export const metadata: Metadata = {
@@ -38,6 +39,7 @@ export default function RootLayout({
         <footer className="p-4 bg-secondary-color text-center">
           <p className="text-lg">© 2024 <a href="https://github.com/ZeddBread" target="_blank" rel="noopener noreferrer" className="text-teal-600 hover:text-teal-700 transition duration-300">GitHub.com/ZeddBread</a>. All rights reserved.</p>
         </footer>
+        <Analytics />
       </body>
     </html>
   );
