@@ -1,9 +1,57 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 //TODO: import { select } from "select2"; //Change to current options to be used in the select
 import { generateAudio } from "@/app/lib/generate-audio";
 //TODO: import { TagLessExpressive, TagFemale, TagMostExpressive, TagMale, TagUnisex } from "@/app/lib/tags";
 import { retrieveAudioFromLocal, storeAudio } from "@/app/lib/save-audio";
+
+// Add this interface at the top of your file
+interface AudioData {
+  id: string;
+  data: string;
+  timestamp: number;
+}
+
+// Initialize IndexedDB with better error handling
+const dbName = "myDatabase";
+let db: IDBDatabase | null = null;
+
+const openRequest = indexedDB.open(dbName, 1);
+
+openRequest.onupgradeneeded = (event: IDBVersionChangeEvent) => {
+  db = (event.target as IDBOpenDBRequest).result;
+  if (!db.objectStoreNames.contains("myStore")) {
+    const store = db.createObjectStore("myStore", { keyPath: "id" });
+    store.createIndex("timestamp", "timestamp", { unique: false });
+  }
+};
+
+openRequest.onsuccess = (event: Event) => {
+  db = (event.target as IDBOpenDBRequest).result;
+  console.log("Database opened successfully");
+};
+
+openRequest.onerror = (event: Event) => {
+  console.error("Error opening IndexedDB:", (event.target as IDBOpenDBRequest).error);
+};
+
+// Improved store data function with Promise
+function storeData(data: AudioData): Promise<void> {
+  return new Promise((resolve, reject) => {
+    if (!db) {
+      reject(new Error("Database not initialized"));
+      return;
+    }
+
+    const transaction = db.transaction("myStore", "readwrite");
+    const store = transaction.objectStore("myStore");
+
+    const request = store.put(data);
+
+    request.onsuccess = () => resolve();
+    request.onerror = () => reject(request.error);
+  });
+}
 
 export default function Home() {
 
@@ -20,47 +68,60 @@ export default function Home() {
   const [openaiApiKey, setOpenaiApiKey] = useState("");
   const [seed, setSeed] = useState<number | undefined>(undefined);
   const [submitDisabled, setSubmitDisabled] = useState(false);
+  const [audioFiles, setAudioFiles] = useState<AudioData[]>([]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError(false);
-    setOpenaiApiKey(openaiApiKey);
-    setAudioFile("/");
-    setAudioTranscript("");
-    setAudioReady(false);
-    setAudioGenerated(false);
     setSubmitDisabled(true);
 
     const timestamp = new Date().toISOString().replace(/[-T:.Z]/g, '').slice(0, 14);
     const filename = `${fileOutput}_${timestamp}`;
-    console.log({ text, accent, emotion, voice, filename, seed });
 
     try {
       const audioData = await generateAudio(text, voice, accent, emotion, openaiApiKey, seed ?? undefined);
-      const transcript = audioData?.transcript;
-      if (transcript) {
-        setAudioTranscript(transcript);
-      }
+      
       if (audioData) {
-        // eslint-disable-next-line
-        const audioFile = await storeAudio(audioData.data, filename);
-        const audioFileBuffer = await retrieveAudioFromLocal(filename);
-        if (audioFileBuffer) {
-          const audioFileUrl = URL.createObjectURL(new Blob([audioFileBuffer], { type: 'audio/wav' }));
-          console.log("Audio file written: ", audioFileUrl);
-          setAudioFile(audioFileUrl);
-          setAudioReady(true);
-          setAudioGenerated(true);
-          setSubmitDisabled(false);
-        }
+        // Store in IndexedDB
+        await storeData({
+          id: filename,
+          data: audioData.data,
+          timestamp: Date.now()
+        });
+
+        // Create audio URL for playback
+        const audioBuffer = Buffer.from(audioData.data, 'base64');
+        const audioFileUrl = URL.createObjectURL(new Blob([audioBuffer], { type: 'audio/wav' }));
+        
+        setAudioFile(audioFileUrl);
+        setAudioTranscript(audioData.transcript || '');
+        setAudioReady(true);
+        setAudioGenerated(true);
       }
     } catch (error) {
       console.error("Error generating audio:", error);
       setError(true);
+    } finally {
+      setSubmitDisabled(false);
     }
-
   };
 
+  useEffect(() => {
+    if (db) {
+      const transaction = db.transaction("myStore", "readonly");
+      const store = transaction.objectStore("myStore");
+      const request = store.getAll();
+
+      request.onsuccess = () => {
+        const files = request.result as AudioData[];
+        setAudioFiles(files);
+      };
+
+      request.onerror = () => {
+        console.error("Error fetching audio files:", request.error);
+      };
+    }
+  }, [db]);
 
   return (
     <div className="flex flex-col-reverse lg:flex-row justify-center items-center w-full">
@@ -69,30 +130,16 @@ export default function Home() {
         <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-center mb-4">Audio Files</h2>
         <p className="text-md bg-gray-400 rounded-lg p-4 sm:text-md md:text-lg text-center">Here you can find all the audio files you have generated on your device. You can play and download them.</p>
         <ul className="w-full list-disc pl-5">
-          {(typeof globalThis.localStorage !== 'undefined' ? Object.keys(globalThis.localStorage) : []).filter((key) => {
-            const audioData = globalThis.localStorage.getItem(key);
-            try {
-              // Check if the data is a valid base64 string
-              return audioData && btoa(atob(audioData)) === audioData;
-              // eslint-disable-next-line
-            } catch (e) {
-              return false;
-            }
-          }).sort((a, b) => {
-            const timeA = globalThis.localStorage.getItem(a + '_timestamp');
-            const timeB = globalThis.localStorage.getItem(b + '_timestamp');
-            return (timeB ? parseInt(timeB) : 0) - (timeA ? parseInt(timeA) : 0);
-          }).map((key) => (
-            <li key={key} className="flex flex-row justify-between items-center w-full p-2 border-b border-gray-300 hover:bg-gray-100 transition duration-200 ease-in-out">
-              <span className="text-sm sm:text-md md:text-lg font-medium text-gray-800 truncate flex-grow">{key}</span>
+          {audioFiles.map((file: AudioData) => (
+            <li key={file.id} className="flex flex-row justify-between items-center w-full p-2 border-b border-gray-300 hover:bg-gray-100 transition duration-200 ease-in-out">
+              <span className="text-sm sm:text-md md:text-lg font-medium text-gray-800 truncate flex-grow">
+                {file.id}
+              </span>
               <button
                 onClick={() => {
-                  const audioData = globalThis.localStorage.getItem(key);
-                  if (audioData) {
-                    const audioFileUrl = URL.createObjectURL(new Blob([Buffer.from(audioData, 'base64')], { type: 'audio/wav' }));
-                    const audio = new Audio(audioFileUrl);
-                    audio.play();
-                  }
+                  const audioFileUrl = URL.createObjectURL(new Blob([Buffer.from(file.data, 'base64')], { type: 'audio/wav' }));
+                  const audio = new Audio(audioFileUrl);
+                  audio.play();
                 }}
                 className="flex items-center justify-center w-8 h-8 flex-shrink-0 text-gray-800 bg-green-500 hover:bg-green-600 transition duration-200 ease-in-out"
               >
@@ -100,14 +147,11 @@ export default function Home() {
               </button>
               <button
                 onClick={() => {
-                  const audioData = globalThis.localStorage.getItem(key);
-                  if (audioData) {
-                    const audioFileUrl = URL.createObjectURL(new Blob([Buffer.from(audioData, 'base64')], { type: 'audio/wav' }));
-                    const a = document.createElement('a');
-                    a.href = audioFileUrl;
-                    a.download = `${key}.wav`;
-                    a.click();
-                  }
+                  const audioFileUrl = URL.createObjectURL(new Blob([Buffer.from(file.data, 'base64')], { type: 'audio/wav' }));
+                  const a = document.createElement('a');
+                  a.href = audioFileUrl;
+                  a.download = `${file.id}.wav`;
+                  a.click();
                 }}
                 className="flex items-center justify-center w-8 h-8 flex-shrink-0 text-gray-800 bg-blue-500 hover:bg-blue-600 transition duration-200 ease-in-out"
               >
