@@ -3,6 +3,7 @@ import { useState } from "react";
 //TODO: import { select } from "select2"; //Change to current options to be used in the select
 import { generateAudio } from "@/app/lib/generate-audio";
 //TODO: import { TagLessExpressive, TagFemale, TagMostExpressive, TagMale, TagUnisex } from "@/app/lib/tags";
+// eslint-disable-next-line
 import { retrieveAudioFromLocal, storeAudio } from "@/app/lib/save-audio";
 
 export default function Home() {
@@ -224,7 +225,7 @@ export default function Home() {
             disabled={!openaiApiKey || submitDisabled}
             title={!openaiApiKey ? "Needs API key!" : ""}
           >
-            {`${!openaiApiKey ? 'Needs API key' : '' } ${submitDisabled ? 'Wait...' : 'Submit'}`}
+            {`${!openaiApiKey ? 'Needs API key' : ''} ${submitDisabled ? 'Wait...' : 'Submit'}`}
           </button>
 
           {error && (

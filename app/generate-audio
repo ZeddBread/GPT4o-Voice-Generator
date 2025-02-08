@@ -1,0 +1,33 @@
+import { writeFileSync } from "fs";
+import OpenAI, { AudioVoice } from "openai";
+
+const openai = new OpenAI();
+
+export async function generateAudio(text: string, voice: OpenAI.AudioVoice, fileOutput: string) {
+  try {
+    // Generate an audio response to the given prompt
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o-audio-preview",
+      modalities: ["text", "audio"],
+      audio: { voice: voice, format: "wav" },
+      messages: [
+        {
+          role: "user",
+          content: text
+        }
+      ]
+    });
+
+    // Inspect returned data
+    console.log(response.choices[0]);
+
+    // Write audio data to a file
+    writeFileSync(
+      fileOutput + ".wav",
+      Buffer.from(response.choices[0].message.audio.data, 'base64'),
+      { encoding: "utf-8" }
+    );
+  } catch (error) {
+    console.error("Error generating audio:", error);
+  }
+}
