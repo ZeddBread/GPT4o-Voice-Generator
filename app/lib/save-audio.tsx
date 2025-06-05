@@ -1,4 +1,3 @@
-
 // Function to store Base64 audio data in session storage
 export function storeAudio(base64Audio: string, key: string): void {
   try {
@@ -10,7 +9,7 @@ export function storeAudio(base64Audio: string, key: string): void {
   }
 }
 
-// Function to retrieve Base64 audio data from session storage
+// Function to retrieve Base64 audio data from local storage
 export function retrieveAudioFromLocal(key: string) {
   try {
     const base64Audio = globalThis.localStorage.getItem(key);
