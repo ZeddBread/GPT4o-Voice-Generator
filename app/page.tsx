@@ -44,8 +44,8 @@ export default function Home() {
       }
       if (audioData) {
         // eslint-disable-next-line
-        const audioFile = await storeAudio(audioData.data, filename);
-        const audioFileBuffer = await retrieveAudioFromLocal(filename);
+        storeAudio(audioData.data, filename);
+        const audioFileBuffer = retrieveAudioFromLocal(filename);
         if (audioFileBuffer) {
           const audioFileUrl = URL.createObjectURL(new Blob([audioFileBuffer], { type: 'audio/wav' }));
           console.log("Audio file written: ", audioFileUrl);
