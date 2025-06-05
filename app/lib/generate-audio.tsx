@@ -24,7 +24,6 @@ export async function generateAudio(
     const response = await openai.chat.completions.create({
       model: "gpt-4o-audio-preview",
       modalities: ["text", "audio"],
-      // @ts-expect-error: Suppress type error due to outdated type definitions
       audio: { voice: zVoice, format: "wav" },
       seed: seed,
       messages: [
