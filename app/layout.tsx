@@ -20,7 +20,7 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.ico" />
       </head>
       <body
-        className={`font-sansantialiased bg-background text-foreground bg-gray-900`}
+        className={`font-sans antialiased bg-background text-foreground bg-gray-900`}
       >
         <header className="p-4 bg-primary-color bg-gray-800 drop-shadow-lg rounded-3xl mx-4 my-5 shadow-black text-white flex flex-col items-center">
           <h1 className="text-3xl font-bold mb-2">Welcome to the GPT-4o Voice Generator</h1>
