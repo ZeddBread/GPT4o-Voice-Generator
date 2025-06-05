@@ -1,11 +1,9 @@
-
-// Function to store Base64 audio data in local storage
-export function storeAudio(base64Audio: string, key: string) {
+// Function to store Base64 audio data in session storage
+export function storeAudio(base64Audio: string, key: string): void {
   try {
     // Store the Base64 string in local storage for later use
-    const localAudio = globalThis.localStorage.setItem(key, base64Audio);
+    globalThis.localStorage.setItem(key, base64Audio);
     console.log("Audio data stored in local storage.");
-    return localAudio;
   } catch (error) {
     console.error("Error storing audio data:", error);
   }
